@@ -8,7 +8,7 @@ project:
   clock_hz:     0                                           # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
-  tiles: "1x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2 or 6x2
+  tiles: "1x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
   top_module:  "tt_um_rebeccargb_vga_pride"
@@ -102,8 +102,13 @@ project:
     - "flag_unlabeled.v"
     - "flag_uranic.v"
     - "flag_voidpunk.v"
+    - "flag_lesbian_butch_v1.v"
+    - "flag_lesbian_butch_v2.v"
+    - "flag_sapiosexual_v1.v"
+    - "flag_sapiosexual_v2.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
+# This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
   # Inputs
   ui[0]: "address mode"
