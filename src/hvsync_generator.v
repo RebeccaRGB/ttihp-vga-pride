@@ -37,32 +37,39 @@ module hvsync_generator(clk, reset, hsync, vsync, display_on, hpos, vpos);
   parameter V_SYNC_END      = V_DISPLAY + V_BOTTOM + V_SYNC - 1;
   parameter V_MAX           = V_DISPLAY + V_TOP + V_BOTTOM + V_SYNC - 1;
 
-  wire hmaxxed = (hpos == H_MAX) || reset;	// set when hpos is maximum
-  wire vmaxxed = (vpos == V_MAX) || reset;	// set when vpos is maximum
-  
   // horizontal position counter
   always @(posedge clk)
   begin
-    hsync <= (hpos>=H_SYNC_START && hpos<=H_SYNC_END);
-    if(hmaxxed)
+    if (reset) begin
+      hsync <= 0;
       hpos <= 0;
-    else
-      hpos <= hpos + 1;
+    end else begin
+      hsync <= (hpos >= H_SYNC_START && hpos <= H_SYNC_END);
+      if (hpos == H_MAX)
+        hpos <= 0;
+      else
+        hpos <= hpos + 1;
+    end
   end
 
   // vertical position counter
   always @(posedge clk)
   begin
-    vsync <= (vpos>=V_SYNC_START && vpos<=V_SYNC_END);
-    if(hmaxxed)
-      if (vmaxxed)
-        vpos <= 0;
-      else
-        vpos <= vpos + 1;
+    if (reset) begin
+      vsync <= 0;
+      vpos <= 0;
+    end else begin
+      vsync <= (vpos >= V_SYNC_START && vpos <= V_SYNC_END);
+      if (hpos == H_MAX)
+        if (vpos == V_MAX)
+          vpos <= 0;
+        else
+          vpos <= vpos + 1;
+    end
   end
-  
+
   // display_on is set when beam is in "safe" visible frame
-  assign display_on = (hpos<H_DISPLAY) && (vpos<V_DISPLAY);
+  assign display_on = (hpos < H_DISPLAY) && (vpos < V_DISPLAY);
 
 endmodule
 
